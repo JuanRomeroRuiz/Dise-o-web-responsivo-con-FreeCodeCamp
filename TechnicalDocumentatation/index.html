@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Técnica</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav id="navbar">
+        <header>Métodos de petición HTTP</header>
+        <ul>
+            <li>
+                <a class="nav-link" href="#CONNECT">CONNECT</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#DELETE">DELETE</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#GET">GET</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#HEAD">HEAD</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#OPTIONS">OPTIONS</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#PATCH">PATCH</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#POST">POST</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#PUT">PUT</a>
+            </li>
+            <li>
+                <a class="nav-link" href="#TRACE">TRACE</a>
+            </li> 
+        </ul>
+    </nav>
+    <main id="main-doc">
+        <section class="main-section" id="CONNECT">
+            <header>CONNECT</header>
+            <article>
+                <p>
+                    El método HTTP CONNECT se utiliza principalmente para establecer un túnel a través de un servidor proxy. Este túnel permite que el cliente establezca una conexión directa con un servidor remoto, utilizando un protocolo diferente al HTTP. En otras palabras, CONNECT actúa como un intermediario que facilita la comunicación entre dos puntos, pero sin participar en la conversación.</p>
+                <p>
+                    <strong>Por ejemplo: </strong>Un cliente quiere conectarse a un servidor IMAP a través de un proxy HTTP. El cliente envía una solicitud CONNECT al proxy, especificando el host y el puerto del servidor IMAP. El proxy establece un túnel y el cliente inicia una sesión IMAP con el servidor, como si se estuviera conectando directamente.
+                </p>
+                <h4>¿Cuándo usar una petición CONNECT?</h4>
+                <ul>
+                    <li>
+                        <strong>Correo electrónico: </strong>Para acceder a servidores IMAP o POP3 que requieren una conexión directa y cifrada, especialmente cuando se está detrás de un firewall restrictivo.
+                    </li>
+                    <li>
+                        <strong>VPN: </strong>Para establecer conexiones VPN a través de un servidor proxy.
+                    </li>
+                    <li>
+                            <strong>Servicios de streaming: </strong> En algunos casos, los servicios de streaming pueden requerir conexiones directas para evitar intermediarios que puedan afectar la calidad de la transmisión.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición CONNECT</h4>
+                <code>CONNECT www.example.com:443 HTTP/1.1</code>
+                <ul>
+                    <li>
+                        <strong>CONNECT: </strong>Este es el verbo HTTP que indica al servidor que se desea establecer un túnel.
+                    </li>
+                    <li>
+                        <strong>host:port: </strong>La dirección del servidor al que se quiere conectar, incluyendo el número de puerto. Esta parte es crucial, ya que especifica el destino final de la conexión.
+                    </li>
+                    <li>
+                        <strong>HTTP/1.1: </strong>La versión del protocolo HTTP utilizada.
+                    </li>
+                </ul>
+                <h4>Ejemplo</h4>
+                <code>
+                    CONNECT server.example.com:80 HTTP/1.1
+                    Host: server.example.com:80
+                    Proxy-Authorization: basic aGVsbG86d29ybGQ=
+                </code>
+            </article>
+        </section>
+        <section class="main-section" id="DELETE">
+            <header>DELETE</header>
+            <article>
+                <P>
+                    El método HTTP DELETE es una de las herramientas fundamentales en la arquitectura REST para gestionar recursos web. Su función principal es eliminar un recurso específico identificado por una URI (Uniform Resource Identifier). Cuando un cliente envía una solicitud DELETE a un servidor, está solicitando de manera explícita que el recurso al que apunta la URI sea borrado de forma permanente.
+                </P>
+                <h4>¿Cuándo usar el método delete?</h4>
+                <ul>
+                    <li>
+                        <strong>Eliminar elementos de una colección: </strong>Por ejemplo, eliminar un comentario específico de una publicación en un blog.
+                    </li>
+                    <li>
+                        <strong>Borrar registros de una base de datos: </strong>Eliminar un usuario, un producto o cualquier otro tipo de registro almacenado.
+                    </li>
+                    <li>
+                        <strong>Anular suscripciones: </strong>Eliminar un usuario de una lista de correo o cancelar una suscripción a un servicio.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición DELETE</h4>
+                <code>
+                    DELETE /recursos/123 HTTP/1.1
+                    Host: api.ejemplo.com 
+                </code>
+                <ul>
+                    <li>
+                        <strong>DELETE: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos/123: </strong>La URI que identifica de forma única el recurso a eliminar.
+                    </li>
+                    <li>
+                        <strong>Host: </strong>El encabezado que especifica el servidor al que se dirige la solicitud.
+                    </li>
+                </ul>
+                <h4>Respuestas del servidor</h4>
+                <ul>
+                    <li>
+                        <strong>200 OK: </strong> La eliminación se realizó correctamente.
+                    </li>
+                    <li>
+                        <strong>204 No Content: </strong>La eliminación se realizó correctamente, pero no hay contenido en la respuesta.
+                    </li>
+                    <li>
+                        <strong>404 Not found: </strong>El recurso solicitado no existe.
+                    </li>
+                    <li>
+                        <strong>401 Unauthorized: </strong>El cliente no está autorizado para realizar esta acción.
+                    </li>
+                    <li>
+                        <strong>403 Forbidden: </strong> El cliente está autorizado, pero no tiene permisos para eliminar el recurso.
+                    </li>
+                    <li>
+                        <strong>500 Internal Server Error: </strong>Ocurrió un error en el servidor al procesar la solicitud.
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class="main-section" id="GET">
+            <header>GET</header>
+            <article>
+                <p>
+                    El método HTTP GET es uno de los más comunes y fundamentales en la arquitectura REST. Su función principal es solicitar una representación de un recurso específico. Cuando un cliente envía una petición GET a un servidor, está pidiendo que se le envíe una copia de ese recurso.
+                </p>
+                <h4>¿Cuándo usar el método GET?</h4>
+                <ul>
+                    <li>
+                        <strong>Obtener información: </strong>Para recuperar datos de un servidor, como por ejemplo, una página web, un documento, una imagen o cualquier otro tipo de contenido.
+                    </li>
+                    <li>
+                        <strong>Consultar el estado de un recurso: </strong>Para verificar si un recurso existe y obtener información sobre su estado actual.
+                    </li>
+                    <li>
+                        <strong>Buscar recursos: </strong>Para realizar búsquedas en una colección de recursos y obtener los resultados que coincidan con los criterios de búsqueda.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición GET</h4>
+                <code>
+                    GET /recursos/123 HTTP/1.1
+                    Host: api.ejemplo.com
+                </code>
+                <ul>
+                    <li>
+                        <strong>GET: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos/123: </strong>La URI que identifica de forma única el recurso a recuperar.
+                    </li>
+                    <li>
+                        <strong>Host: </strong>El encabezado que especifica el servidor al que se dirige la solicitud.
+                    </li>
+                </ul>
+                <h4>Respuestas del servidor</h4>
+                <ul>
+                    <li>
+                        <strong>200 OK: </strong>El recurso fue encontrado y se envió al cliente.
+                    </li>
+                    <li>
+                        <strong>304 Not Modified: </strong> El recurso no ha sido modificado desde la última vez que fue solicitado.
+                    </li>
+                    <li>
+                        <strong>404 Not Found: </strong>El recurso solicitado no existe.
+                    </li>
+                    <li>
+                        <strong>500 Internal Server Error: </strong>Ocurrió un error en el servidor al procesar la solicitud.
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class="main-section" id="HEAD">
+            <header>HEAD</header>
+            <article>
+                <p>
+                    El método HTTP HEAD es un método de petición menos conocido pero muy útil. Su función principal es solicitar únicamente los encabezados de una respuesta HTTP, sin el cuerpo de la respuesta. Esto significa que puedes obtener información valiosa sobre un recurso sin tener que descargar todo su contenido.
+                </p>
+                <h4>¿Cuándo usar HEAD?</h4>
+                <ul>
+                    <li>
+                        <strong>Validación de cabeceras: </strong>Para verificar si un recurso existe, su tamaño, tipo de contenido, fecha de modificación, entre otros detalles, sin descargar el contenido completo.
+                    </li>
+                    <li>
+                        <strong>Caché: </strong>Para determinar si un recurso ha sido modificado desde la última vez que fue solicitado, lo que permite utilizar una versión en caché si no ha habido cambios.
+                    </li>
+                    <li>
+                        <strong>Detección de enlaces rotos: </strong>Para verificar si un enlace apunta a un recurso válido sin seguir el enlace.
+                    </li>
+                    <li>
+                        <strong>Optimización de solicitudes: </strong>Al evitar descargar el cuerpo de la respuesta, las solicitudes HEAD son más rápidas y eficientes.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición HEAD</h4>
+                <code>
+                    HEAD /recursos/123 HTTP/1.1
+                    Host: api.ejemplo.com
+                </code>
+                <ul>
+                    <li>
+                        <strong>HEAD: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos/123: </strong>La URI que identifica de forma única el recurso.
+                    </li>
+                    <li>
+                        <strong>Host: </strong>El encabezado que especifica el servidor al que se dirige la solicitud.
+                    </li>
+                </ul>
+                <h4>Respuestas del servidor</h4>
+                <ul>
+                    <li>
+                        <strong>Content-Type: </strong>El tipo de contenido del recurso.
+                    </li>
+                    <li>
+                        <strong>Content-Length: </strong>El tamaño del recurso en bytes.
+                    </li>
+                    <li>
+                        <strong>Last-Modified: </strong>La fecha y hora en que el recurso fue modificado por última vez.
+                    </li>
+                    <li>
+                        <strong>Location: </strong>La URL a la que se ha redireccionado el recurso.
+                    </li>
+                    <li>
+                        <strong>ETag: </strong>Un identificador único del recurso.
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class="main-section" id="OPTIONS">
+            <header>OPTIONS</header>
+            <article>
+                <p>
+                    El método HTTP OPTIONS es una herramienta invaluable para los desarrolladores, especialmente cuando se trabaja con APIs RESTful. Su función principal es solicitar al servidor una lista de los métodos HTTP que están permitidos para un recurso específico. En otras palabras, OPTIONS te permite descubrir las acciones que puedes realizar sobre un recurso antes de intentar ejecutarlas.
+                </p>
+                <h4>¿Cuándo usar OPTIONS?</h4>
+                <ul>
+                    <li>
+                        <strong>Descubrimiento de API: </strong>Cuando estás interactuando con una API que no conoces, OPTIONS te permite determinar qué métodos HTTP están soportados para los diferentes recursos.
+                    </li>
+                    <li>
+                        <strong>CORS (Cross-Origin Resource Sharing): </strong>En solicitudes CORS previas, OPTIONS se utiliza para verificar si el servidor permite solicitudes desde un origen diferente.
+                    </li>
+                    <li>
+                        <strong>Seguridad: </strong>Al conocer los métodos permitidos, puedes evitar enviar solicitudes no válidas y mejorar la seguridad de tu aplicación.
+                    </li>
+                    <li>
+                        <strong>Depuración: </strong>Si estás experimentando problemas al realizar solicitudes a un servidor, OPTIONS puede ayudarte a identificar si el problema se debe a un método HTTP no permitido.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición OPTIONS</h4>
+                <code>
+                    OPTIONS /recursos HTTP/1.1
+                    Host: api.ejemplo.com
+                </code>
+                <ul>
+                    <li>
+                        <strong>OPTIONS: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos: </strong>La URI que identifica el recurso para el cual se solicitan las opciones.
+                    </li>
+                    <li>
+                        <strong>Host: </strong>El encabezado que especifica el servidor al que se dirige la solicitud.
+                    </li>
+                </ul>
+                <h4>Respuestas del servidor</h4>
+                <ul>
+                    <li>
+                        <strong>200 OK: </strong>La solicitud fue exitosa y el servidor incluirá en la cabecera Allow una lista de los métodos HTTP permitidos para el recurso.
+                    </li>
+                    <li>
+                        <strong>405 Method Not Allowed: </strong>El método OPTIONS no está permitido para el recurso solicitado.
+                    </li>
+                </ul>
+                <h4>Ejemplo de una respuesta OPTIONS</h4>
+                <code>
+                    HTTP/1.1 200 OK
+                    Allow: GET, POST, DELETE
+                    Content-Length: 0
+                </code>
+                <p>
+                    <p>En este ejemplo, el servidor indica que los métodos GET, POST y DELETE están permitidos para el recurso solicitado.</p>
+                </p>
+            </article>
+        </section>
+        <section class="main-section" id="PATCH">
+            <header>PATCH</header>
+            <article>
+                <p>
+                    El método HTTP PATCH es una herramienta fundamental para realizar actualizaciones parciales a un recurso existente. A diferencia de PUT, que reemplaza completamente un recurso, PATCH permite aplicar cambios específicos a partes concretas de un recurso.
+                </p>
+                <h4>¿Cuándo usar PATCH?</h4>
+                <ul>
+                    <li>
+                        <strong>Actualizaciones parciales: </strong>Cuando deseas modificar solo algunos atributos de un recurso, sin tener que enviar toda la información del recurso nuevamente.
+                    </li>
+                    <li>
+                        <strong>Optimización de tráfico: </strong>Al enviar solo los datos que necesitan ser modificados, PATCH reduce el tamaño de las solicitudes y mejora el rendimiento.
+                    </li>
+                    <li>
+                        <strong> Versionado: </strong>PATCH puede utilizarse para implementar un sistema de versionado, donde cada cambio se registra como una operación individual.
+
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición PATCH</h4>
+                <code>
+                    PATCH /recursos/123 HTTP/1.1
+                    Content-Type: application/json
+                </code>
+                <ul>
+                    <li>
+                        <strong>PATCH: </strong> El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos/123: </strong>La URI que identifica de forma única el recurso a modificar.
+                    </li>
+                    <li>
+                        <strong>Content-Type: </strong> El tipo de contenido del cuerpo de la solicitud, que suele ser JSON para especificar los cambios.
+                    </li>
+                </ul>
+                <h4>Cuerpo de la solicitud</h4>
+                <p>
+                    El cuerpo de una solicitud PATCH contiene un conjunto de instrucciones o un "parche" que describe los cambios que se deben aplicar al recurso. El formato exacto del cuerpo puede variar, pero comúnmente se utiliza JSON para representar los cambios.
+                </p>
+                <h4>Ejemplo de un cuerpo de solicitud PATCH en JSON:</h4>
+                <code>
+                    JSON
+                    {
+                        "nombre": "Nuevo nombre",
+                        "edad": 30
+                    }
+                </code>
+                <p>En este ejemplo, se está solicitando que se cambie el nombre del recurso a "Nuevo nombre" y que se actualice la edad a 30.</p>
+                <h4>Respuestas del Servidor</h4>
+                <p>Las respuestas a una solicitud PATCH son similares a las de otras solicitudes HTTP. Los códigos de estado más comunes son:</p>
+                <ul>
+                    <li>
+                        <strong>200 OK: </strong>La modificación se realizó correctamente.
+                    </li>
+                    <li>
+                        <strong>204 No Content: </strong>La modificación se realizó correctamente, pero no hay contenido en la respuesta.
+                    </li>
+                    <li>
+                        <strong>400 Bad Request: </strong>La solicitud contiene errores de sintaxis.
+                    </li>
+                    <li>
+                        <strong>404 Not Found: </strong>El recurso solicitado no existe.
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class="main-section" id="POST">
+            <header>POST</header>
+            <article>
+                <p>
+                    El método HTTP POST es uno de los más utilizados para interactuar con servidores web. Su función principal es enviar datos a un servidor para crear un nuevo recurso. Es decir, cuando deseas agregar nueva información a un sistema, POST es el método adecuado.
+                </p>
+                <h4>Cuando usar POST</h4>
+                <ul>
+                    <li>
+                        <strong>Crear nuevos recursos: </strong>Para agregar nuevos elementos a una colección, como crear un nuevo usuario, un nuevo producto o una nueva publicación.
+                    </li>
+                    <li>
+                        <strong>Enviar datos de formularios: </strong>Para enviar los datos de un formulario HTML a un servidor.
+                    </li>
+                    <li>
+                        <strong>Subir archivos: </strong>Para enviar archivos al servidor, como imágenes, documentos o videos.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición POST</h4>
+                <code>
+                    POST /recursos HTTP/1.1
+                    Host: api.ejemplo.com
+                    Content-Type: application/json
+                </code>
+                <ul>
+                    <li>
+                        <strong>POST: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos: </strong>La URI que identifica la colección de recursos donde se creará el nuevo elemento.
+                    </li>
+                    <li>
+                        <strong>Host: </strong> El encabezado que especifica el servidor al que se dirige la solicitud.
+                    </li>
+                    <li>
+                        <strong>Content-Type: </strong>El tipo de contenido del cuerpo de la solicitud, que suele ser JSON, XML o multipart/form-data para enviar archivos.
+                    </li>
+                </ul>
+                <h4>Cuerpo de la solicitud</h4>
+                El cuerpo de una solicitud POST contiene los datos que se utilizarán para crear el nuevo recurso. El formato del cuerpo depende del tipo de contenido especificado en el encabezado Content-Type.
+                <h4>Ejemplo de un cuerpo de solicitud POST en JSON:</h4>
+                <code>
+                    JSON
+                    {
+                        "nombre": "Nuevo usuario",
+                        "email": "nuevo@ejemplo.com"
+                    }
+                </code>
+                <h4>Respuestas del Servidor</h4>
+                <ul>
+                    <li>
+                        <strong>201 Created:</strong>El recurso se ha creado correctamente y la ubicación del nuevo recurso se incluye en la cabecera Location.
+                    </li>
+                    <li>
+                        <strong>200 OK: </strong>El recurso se ha creado correctamente, pero la ubicación del nuevo recurso no se incluye en la cabecera Location.
+                    </li>
+                    <li>
+                        <strong>400 Bad Request: </strong>La solicitud contiene errores de sintaxis.
+                    </li>
+                    <li>
+                        <strong>403 Forbidden: </strong>No tienes autorización para crear el recurso.
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class="main-section" id="POST">
+            <header>PUT</header>
+            <article>
+                <p>
+                    El método HTTP PUT se utiliza principalmente para crear o actualizar completamente un recurso existente. Esto significa que cuando envías una solicitud PUT a un servidor, estás reemplazando la representación actual del recurso con los datos proporcionados en el cuerpo de la solicitud.
+                </p>
+                <h4>¿Cuándo usar PUT?</h4>
+                <ul>
+                    <li>
+                        <strong>Crear un recurso: </strong>Si conoces la ubicación exacta donde deseas crear el recurso, puedes utilizar PUT en lugar de POST.
+                    </li>
+                    <li>
+                        <strong>Actualizar un recurso completo: </strong> Cuando deseas reemplazar todos los datos de un recurso existente con un nuevo conjunto de datos.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una petición PUT</h4>
+                <code>
+                    PUT /recursos/123 HTTP/1.1
+                    Content-Type: application/json
+                </code>
+                <ul>
+                    <li>
+                        <strong>PUT: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/recursos/123: </strong>La URI que identifica de forma única el recurso a actualizar.
+                    </li>
+                    <li>
+                        <strong>Content-Type: </strong>El tipo de contenido del cuerpo de la solicitud, que suele ser JSON para especificar los nuevos datos del recurso.
+                    </li>
+                </ul>
+                <h4>Cuerpo de la solicitud</h4>
+                <p>
+                    El cuerpo de una solicitud PUT contiene una representación completa del recurso tal como deseas que quede después de la actualización.
+                </p>
+                <h4>Ejemplo de un cuerpo de solicitud PUT en JSON:</h4>
+                <code>
+                    JSON
+                    {
+                        "nombre": "Nuevo nombre",
+                        "edad": 30,
+                        "ciudad": "Nueva ciudad"
+                    }
+                </code>
+                <p>En este ejemplo, se está solicitando que se actualicen todos los datos del recurso con los valores proporcionados en el JSON.</p>
+                <h4>Respuestas del Servidor</h4>
+                <ul>
+                    <li>
+                        <strong>200 OK: </strong> La actualización se realizó correctamente.
+                    </li>
+                    <li>
+                        <strong>204 No Content: </strong>La actualización se realizó correctamente, pero no hay contenido en la respuesta.
+                    </li>
+                    <li>
+                        <strong>400 Bad Request: </strong>La solicitud contiene errores de sintaxis.
+                    </li>
+                    <li>
+                        <strong>404 Not Found: </strong>El recurso solicitado no existe.
+                    </li>
+            </article>
+        </section>
+        <section class="main-section" id="TRACE">
+            <header>TRACE</header>
+            <article>
+                <p>
+                    El método HTTP TRACE es un método de diagnóstico utilizado principalmente para realizar pruebas en un servidor web. Cuando se envía una solicitud TRACE a un servidor, este debe devolver una respuesta que contenga una copia exacta de la solicitud recibida. Es decir, el servidor "hace eco" de la petición.
+                </p>
+                <h4>¿Cuándo Usar TRACE?</h4>
+                <ul>
+                    <li>
+                        <strong>Depuración: </strong>Se utiliza para verificar la configuración de un servidor, identificar problemas de enrutamiento o comprobar si un proxy está modificando la solicitud.
+                    </li>
+                    <li>
+                        <strong>Pruebas de seguridad: </strong>Puede ser útil para detectar vulnerabilidades como el ataque de reflexión XSS.
+                    </li>
+                </ul>
+                <h4>Sintaxis de una Petición TRACE</h4>
+                <code>
+                    TRACE /ruta/del/recurso HTTP/1.1
+                </code>
+                <ul>
+                    <li>
+                        <strong>TRACE: </strong>El verbo HTTP que indica la acción a realizar.
+                    </li>
+                    <li>
+                        <strong>/ruta/del/recurso: </strong>La URI que identifica el recurso.
+                    </li>
+                </ul>
+                <h4>Ejemplo de una respuesta TRACE:</h4>
+                <code>
+                    HTTP/1.1 200 OK
+                    Content-Type: message/http
+
+                    TRACE /ruta/del/recurso HTTP/1.1
+                    Host: ejemplo.com
+                    ... (resto de la solicitud)
+                </code>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
